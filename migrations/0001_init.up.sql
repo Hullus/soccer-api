@@ -20,7 +20,7 @@ CREATE table teams
 (
     id           BIGSERIAL PRIMARY KEY,
     name         varchar(100)                   NOT NULL,
-    budget_cents VARCHAR     default 5000000.00 NOT NULL,
+    budget_cents BIGINT default 5000000.00 NOT NULL,
     created_at   TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     country      VARCHAR(100)                   NOT NULL,
     owner_id     BIGINT
@@ -35,18 +35,16 @@ CREATE table players
     id                 BIGSERIAL
         CONSTRAINT player_pkey PRIMARY KEY,
     team_id            BIGINT
-        constraint team_id references teams ON DELETE
-            SET
-            NULL,
-    first_name         varchar(100)             NOT NULL,
-    last_name          varchar(100)             NOT NULL,
-    country            varchar(100)             NOT NULL,
-    age                integer                  NOT NULL
+        constraint team_id references teams ON DELETE SET NULL,
+    first_name         varchar(100)                NOT NULL,
+    last_name          varchar(100)                NOT NULL,
+    country            varchar(100)                NOT NULL,
+    age                integer                     NOT NULL
         constraint player_age_check check ((age >= 18) AND (age <= 40)),
-    market_value_cents BIGINT      default 0.00 NOT NULL,
+    market_value_cents BIGINT DEFAULT 100000000.00 NOT NULL,
     created_at         TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at         TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    position           player_position          NOT NULL
+    position           player_position             NOT NULL
 );
 ALTER table players
     owner TO postgres;
