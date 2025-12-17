@@ -25,9 +25,7 @@ CREATE table teams
     country      VARCHAR(100)                   NOT NULL,
     owner_id     BIGINT
         constraint unique_owner_id UNIQUE
-        constraint owner_id references users ON DELETE
-            SET
-            NULL
+        constraint owner_id references users ON DELETE SET NULL
 );
 ALTER table teams
     owner TO postgres;
@@ -60,8 +58,8 @@ CREATE table transfer_listings
     player_id          BIGINT                                           NOT NULL
         constraint table_name_player_id_key UNIQUE
         constraint table_name_player_id_fkey references players,
-    seller_team_id     BIGINT                                           NOT NULL,
-    sold_to_team_id    BIGINT,
+    seller_team_id     BIGINT                                           NOT NULL REFERENCES teams (id),
+    sold_to_team_id    BIGINT REFERENCES teams (id),
     status             listing_status default 'active':: listing_status NOT NULL,
     asking_price_cents BIGINT                                           NOT NULL
         constraint table_name_asking_price_check check ( asking_price_cents > (0):: numeric ),
