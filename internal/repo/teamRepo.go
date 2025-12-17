@@ -17,7 +17,7 @@ func (r TeamRepo) GetTeamInformation(ctx context.Context, userId int64) (*respon
        budget_cents,
        country,
        owner_id,
-       (SELECT SUM(market_value_cents) FROM players) AS total_market_value
+       (SELECT SUM(market_value_cents) FROM players WHERE team_id = teams.id) AS total_market_value
 FROM teams
 WHERE owner_id = $1;
 `

@@ -3,6 +3,7 @@ package http
 import (
 	"soccer-api/internal/http/handlers"
 	"soccer-api/internal/repo"
+	"soccer-api/internal/service"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -16,11 +17,20 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 	r.Use(middleware.AllowContentType("application/json"))
 	r.Use(middleware.CleanPath)
 
-	//Repositories
+	//Repos
 	userRepo := repo.UserRepo{Pool: pool}
+	teamRepo := repo.TeamRepo{Pool: pool}
+	playerRepo := repo.PlayerRepo{Pool: pool}
 
 	//Services
-	authHandler := &handlers.AuthHandler{AuthRepo: userRepo} //TODO: Remove logic from handler and distribute to correct files
+	teamService := service.TeamService{
+		TeamRepo:   teamRepo,
+		PlayerRepo: playerRepo,
+	}
+
+	//Handlers
+	authHandler := &handlers.AuthHandler{AuthRepo: userRepo}
+	teamHandler := &handlers.TeamHandler{Service: teamService}
 
 	r.Group(func(r chi.Router) {
 		//Auth
@@ -31,14 +41,14 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 	r.Group(func(r chi.Router) {
 		r.Use(customMiddleware.Auth)
 		//Team routes
-		r.Get("/v1/me/team", nil)
-		r.Patch("/v1/me/team", nil)
-		r.Patch("/v1/me/players/{playerId}", nil)
-		//Market routes
-		r.Post("/v1/me/players/{playerId}/list", nil)
-		r.Delete("/v1/me/players/{playerId}/list\n", nil)
-		r.Get("/v1/market", nil)
-		r.Post("/v1/market/{listingId}/buy", nil)
+		r.Get("/v1/me/team", teamHandler.GetTeamInfo)
+		//r.Patch("/v1/me/team", nil)
+		//r.Patch("/v1/me/players/{playerId}", nil)
+		////Market routes
+		//r.Post("/v1/me/players/{playerId}/list", nil)
+		//r.Delete("/v1/me/players/{playerId}/list\n", nil)
+		//r.Get("/v1/market", nil)
+		//r.Post("/v1/market/{listingId}/buy", nil)
 	})
 
 	return r
