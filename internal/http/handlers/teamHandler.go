@@ -8,13 +8,13 @@ import (
 )
 
 type TeamHandler struct {
-	service service.TeamService
+	Service service.TeamService
 }
 
-func (h *TeamHandler) getTeamInfo(w http.ResponseWriter, r *http.Request) {
+func (h *TeamHandler) GetTeamInfo(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	res, err := h.service.GetTeamInformation(ctx)
+	res, err := h.Service.GetTeamInformation(ctx)
 	if err != nil {
 		fmt.Println("ERROR")
 		return

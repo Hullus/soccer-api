@@ -11,8 +11,8 @@ import (
 )
 
 type TeamService struct {
-	teamRepo   repo.TeamRepo
-	playerRepo repo.PlayerRepo
+	TeamRepo   repo.TeamRepo
+	PlayerRepo repo.PlayerRepo
 }
 
 func (r TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInformationResponse, error) {
@@ -21,7 +21,7 @@ func (r TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInf
 		return nil, nil //TODO CHANGE THIS
 	}
 
-	teamInfo, err := r.teamRepo.GetTeamInformation(ctx, userId)
+	teamInfo, err := r.TeamRepo.GetTeamInformation(ctx, userId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil //TODO CHANGE THIS
@@ -29,7 +29,7 @@ func (r TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInf
 		return nil, fmt.Errorf("service.getTeamInformation: %w", err)
 	}
 
-	players, err := r.playerRepo.GetPlayersByTeam(ctx, teamInfo.ID)
+	players, err := r.PlayerRepo.GetPlayersByTeam(ctx, teamInfo.ID)
 	if err != nil {
 		return nil, fmt.Errorf("service.getPlayersByTeam (ID: %d): %w", teamInfo.ID, err)
 	}
