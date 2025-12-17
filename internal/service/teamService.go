@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 	"soccer-api/internal/domain/responses"
@@ -18,14 +17,11 @@ type TeamService struct {
 func (s TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInformationResponse, error) {
 	userId := util.GetUserID(ctx)
 	if userId == 0 {
-		return nil, nil //TODO CHANGE THIS
+		return nil, errors.New("unauthorized")
 	}
 
 	teamInfo, err := s.TeamRepo.GetTeamInformation(ctx, userId)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, nil //TODO CHANGE THIS
-		}
 		return nil, fmt.Errorf("service.getTeamInformation: %w", err)
 	}
 

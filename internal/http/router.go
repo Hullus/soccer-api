@@ -56,7 +56,7 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 		r.Post("/v1/me/players/{playerId}/list", marketHandler.ListPlayer)
 		r.Delete("/v1/me/players/{playerId}/list", marketHandler.CancelListing)
 		r.Get("/v1/market", marketHandler.GetMarket)
-		r.Post("/v1/market/{listingId}/buy", nil)
+		r.Post("/v1/market/{listingId}/buy", marketHandler.BuyPlayer)
 	})
 
 	return r

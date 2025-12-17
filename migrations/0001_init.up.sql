@@ -66,3 +66,16 @@ CREATE table transfer_listings
 );
 ALTER table transfer_listings
     owner TO postgres;
+
+CREATE TABLE transfers
+(
+    id           BIGSERIAL PRIMARY KEY,
+    player_id    BIGINT                                NOT NULL REFERENCES players (id),
+    from_team_id BIGINT                                NOT NULL REFERENCES teams (id),
+    to_team_id   BIGINT                                NOT NULL REFERENCES teams (id),
+    price_cents  BIGINT                                NOT NULL,
+    created_at   TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+ALTER TABLE transfers
+    OWNER TO postgres;

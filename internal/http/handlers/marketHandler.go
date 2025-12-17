@@ -56,3 +56,21 @@ func (h *MarketHandler) CancelListing(w http.ResponseWriter, r *http.Request) {
 		Message: "Transfer listing cancelled successfully",
 	})
 }
+
+func (h *MarketHandler) BuyPlayer(w http.ResponseWriter, r *http.Request) {
+	listingID, err := strconv.ParseInt(chi.URLParam(r, "listingId"), 10, 64)
+	if err != nil {
+		http.Error(w, "invalid listing id", http.StatusBadRequest)
+		return
+	}
+
+	if err := h.Service.BuyPlayer(r.Context(), listingID); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(responses.MessageResponse{
+		Message: "Player purchased successfully",
+	})
+}

@@ -12,14 +12,15 @@ type TeamRepo struct {
 }
 
 func (r TeamRepo) GetTeamInformation(ctx context.Context, userId int64) (*responses.TeamInformation, error) {
-	query := `SELECT id,
-       name,
-       budget_cents,
-       country,
-       owner_id,
-       (SELECT SUM(market_value_cents) FROM players WHERE team_id = teams.id) AS total_market_value
-FROM teams
-WHERE owner_id = $1;
+	query := `
+        SELECT id,
+               name,
+               budget_cents,
+               country,
+               owner_id,
+               (SELECT SUM(market_value_cents) FROM players WHERE team_id = teams.id) AS total_market_value
+        FROM teams
+        WHERE owner_id = $1;
 `
 
 	var t responses.TeamInformation

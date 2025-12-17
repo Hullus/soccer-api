@@ -15,6 +15,9 @@ type MarketService struct {
 
 func (s MarketService) CancelPlayerListing(ctx context.Context, playerID int64) error {
 	userID := util.GetUserID(ctx)
+	if userID == 0 {
+		return errors.New("unauthorized")
+	}
 
 	ownerID, err := s.PlayerRepo.GetPlayerOwner(ctx, playerID)
 	if err != nil {
@@ -29,6 +32,9 @@ func (s MarketService) CancelPlayerListing(ctx context.Context, playerID int64) 
 
 func (s MarketService) ListPlayerOnMarket(ctx context.Context, playerID int64, price int64) error {
 	userID := util.GetUserID(ctx)
+	if userID == 0 {
+		return errors.New("unauthorized")
+	}
 
 	ownerID, err := s.PlayerRepo.GetPlayerOwner(ctx, playerID)
 	if err != nil {
@@ -44,4 +50,13 @@ func (s MarketService) ListPlayerOnMarket(ctx context.Context, playerID int64, p
 	}
 
 	return s.MarketRepo.CreateListing(ctx, playerID, team.ID, price)
+}
+
+func (s MarketService) BuyPlayer(ctx context.Context, listingID int64) error {
+	userID := util.GetUserID(ctx)
+	if userID == 0 {
+		return errors.New("unauthorized")
+	}
+
+	return s.MarketRepo.BuyPlayer(ctx, userID, listingID)
 }
