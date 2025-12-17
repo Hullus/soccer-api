@@ -18,7 +18,7 @@ func main() {
 	}
 	defer pool.Close()
 
-	r := internalHttp.CreateRouter()
+	r := internalHttp.CreateRouter(pool)
 
 	port := os.Getenv("PORT")
 	if port == "" {
