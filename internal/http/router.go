@@ -16,7 +16,7 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.AllowContentType("application/json"))
 	r.Use(middleware.CleanPath)
-
+	//TODO: Remake these with static factories
 	//Repos
 	userRepo := repo.UserRepo{Pool: pool}
 	teamRepo := repo.TeamRepo{Pool: pool}
@@ -31,6 +31,7 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 	//Handlers
 	authHandler := &handlers.AuthHandler{AuthRepo: userRepo}
 	teamHandler := &handlers.TeamHandler{Service: teamService}
+	playerHandler := &handlers.PlayerHandler{Service: teamService}
 
 	r.Group(func(r chi.Router) {
 		//Auth
@@ -42,8 +43,8 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 		r.Use(customMiddleware.Auth)
 		//Team routes
 		r.Get("/v1/me/team", teamHandler.GetTeamInfo)
-		//r.Patch("/v1/me/team", nil)
-		//r.Patch("/v1/me/players/{playerId}", nil)
+		r.Patch("/v1/me/team", teamHandler.UpdateTeam)
+		r.Patch("/v1/me/players/{playerId}", playerHandler.UpdatePlayer)
 		////Market routes
 		//r.Post("/v1/me/players/{playerId}/list", nil)
 		//r.Delete("/v1/me/players/{playerId}/list\n", nil)

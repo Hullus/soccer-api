@@ -38,3 +38,9 @@ WHERE owner_id = $1;
 
 	return &t, nil
 }
+
+func (r TeamRepo) UpdateTeam(ctx context.Context, teamID int64, name, country string) error {
+	query := `UPDATE teams SET name = $1, country = $2 WHERE id = $3`
+	_, err := r.Pool.Exec(ctx, query, name, country, teamID)
+	return err
+}

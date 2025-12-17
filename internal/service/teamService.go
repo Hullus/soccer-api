@@ -36,3 +36,24 @@ func (r TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInf
 
 	return &responses.TeamInformationResponse{Team: *teamInfo, Players: players}, nil
 }
+
+func (r TeamService) UpdateTeam(ctx context.Context, name, country string) error {
+	userId := util.GetUserID(ctx)
+	team, err := r.TeamRepo.GetTeamInformation(ctx, userId)
+	if err != nil {
+		return err
+	}
+	return r.TeamRepo.UpdateTeam(ctx, team.ID, name, country)
+}
+
+func (r TeamService) UpdatePlayer(ctx context.Context, playerID int64, firstName, lastName, country string) error {
+	userId := util.GetUserID(ctx)
+	ownerID, err := r.PlayerRepo.GetPlayerOwner(ctx, playerID)
+	if err != nil {
+		return err
+	}
+	if ownerID != userId {
+		return errors.New("unauthorized: you do not own this player")
+	}
+	return r.PlayerRepo.UpdatePlayer(ctx, playerID, firstName, lastName, country)
+}

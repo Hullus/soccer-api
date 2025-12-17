@@ -54,3 +54,16 @@ func (r PlayerRepo) GetPlayersByTeam(ctx context.Context, teamID int64) ([]respo
 
 	return players, nil
 }
+
+func (r PlayerRepo) UpdatePlayer(ctx context.Context, playerID int64, firstName, lastName, country string) error {
+	query := `UPDATE players SET first_name = $1, last_name = $2, country = $3, updated_at = NOW() WHERE id = $4`
+	_, err := r.Pool.Exec(ctx, query, firstName, lastName, country, playerID)
+	return err
+}
+
+func (r PlayerRepo) GetPlayerOwner(ctx context.Context, playerID int64) (int64, error) {
+	var ownerID int64
+	query := `SELECT t.owner_id FROM players p JOIN teams t ON p.team_id = t.id WHERE p.id = $1`
+	err := r.Pool.QueryRow(ctx, query, playerID).Scan(&ownerID)
+	return ownerID, err
+}
