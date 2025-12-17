@@ -1,8 +1,8 @@
-DROP TABLE transfer_listings;
-DROP TABLE players;
-DROP TABLE teams;
-DROP TABLE users;
-DROP TABLE transfers;
+DROP TABLE users CASCADE;
+DROP TABLE teams CASCADE;
+DROP TABLE players CASCADE;
+DROP TABLE transfers CASCADE;
+DROP TABLE transfer_listings CASCADE;
 
-DROP TYPE listing_status;
-DROP TYPE player_position;
+DROP TYPE listing_status CASCADE;
+DROP TYPE player_position CASCADE;
