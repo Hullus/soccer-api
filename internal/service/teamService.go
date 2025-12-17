@@ -15,13 +15,13 @@ type TeamService struct {
 	PlayerRepo repo.PlayerRepo
 }
 
-func (r TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInformationResponse, error) {
+func (s TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInformationResponse, error) {
 	userId := util.GetUserID(ctx)
 	if userId == 0 {
 		return nil, nil //TODO CHANGE THIS
 	}
 
-	teamInfo, err := r.TeamRepo.GetTeamInformation(ctx, userId)
+	teamInfo, err := s.TeamRepo.GetTeamInformation(ctx, userId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil //TODO CHANGE THIS
@@ -29,7 +29,7 @@ func (r TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInf
 		return nil, fmt.Errorf("service.getTeamInformation: %w", err)
 	}
 
-	players, err := r.PlayerRepo.GetPlayersByTeam(ctx, teamInfo.ID)
+	players, err := s.PlayerRepo.GetPlayersByTeam(ctx, teamInfo.ID)
 	if err != nil {
 		return nil, fmt.Errorf("service.getPlayersByTeam (ID: %d): %w", teamInfo.ID, err)
 	}
@@ -44,23 +44,23 @@ func (r TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInf
 	return &responses.TeamInformationResponse{Team: publicTeam, Players: players}, nil
 }
 
-func (r TeamService) UpdateTeam(ctx context.Context, name, country string) error {
+func (s TeamService) UpdateTeam(ctx context.Context, name, country string) error {
 	userId := util.GetUserID(ctx)
-	team, err := r.TeamRepo.GetTeamInformation(ctx, userId)
+	team, err := s.TeamRepo.GetTeamInformation(ctx, userId)
 	if err != nil {
 		return err
 	}
-	return r.TeamRepo.UpdateTeam(ctx, team.ID, name, country)
+	return s.TeamRepo.UpdateTeam(ctx, team.ID, name, country)
 }
 
-func (r TeamService) UpdatePlayer(ctx context.Context, playerID int64, firstName, lastName, country string) error {
+func (s TeamService) UpdatePlayer(ctx context.Context, playerID int64, firstName, lastName, country string) error {
 	userId := util.GetUserID(ctx)
-	ownerID, err := r.PlayerRepo.GetPlayerOwner(ctx, playerID)
+	ownerID, err := s.PlayerRepo.GetPlayerOwner(ctx, playerID)
 	if err != nil {
 		return err
 	}
 	if ownerID != userId {
 		return errors.New("unauthorized: you do not own this player")
 	}
-	return r.PlayerRepo.UpdatePlayer(ctx, playerID, firstName, lastName, country)
+	return s.PlayerRepo.UpdatePlayer(ctx, playerID, firstName, lastName, country)
 }

@@ -21,9 +21,15 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 	userRepo := repo.UserRepo{Pool: pool}
 	teamRepo := repo.TeamRepo{Pool: pool}
 	playerRepo := repo.PlayerRepo{Pool: pool}
+	marketRepo := repo.MarketRepo{Pool: pool}
 
 	//Services
 	teamService := service.TeamService{
+		TeamRepo:   teamRepo,
+		PlayerRepo: playerRepo,
+	}
+	marketService := service.MarketService{
+		MarketRepo: marketRepo,
 		TeamRepo:   teamRepo,
 		PlayerRepo: playerRepo,
 	}
@@ -32,6 +38,7 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 	authHandler := &handlers.AuthHandler{AuthRepo: userRepo}
 	teamHandler := &handlers.TeamHandler{Service: teamService}
 	playerHandler := &handlers.PlayerHandler{Service: teamService}
+	marketHandler := &handlers.MarketHandler{Service: marketService}
 
 	r.Group(func(r chi.Router) {
 		//Auth
@@ -46,10 +53,10 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 		r.Patch("/v1/me/team", teamHandler.UpdateTeam)
 		r.Patch("/v1/me/players/{playerId}", playerHandler.UpdatePlayer)
 		////Market routes
-		//r.Post("/v1/me/players/{playerId}/list", nil)
-		//r.Delete("/v1/me/players/{playerId}/list\n", nil)
-		//r.Get("/v1/market", nil)
-		//r.Post("/v1/market/{listingId}/buy", nil)
+		r.Post("/v1/me/players/{playerId}/list", marketHandler.ListPlayer)
+		r.Delete("/v1/me/players/{playerId}/list", marketHandler.CancelListing)
+		r.Get("/v1/market", marketHandler.GetMarket)
+		r.Post("/v1/market/{listingId}/buy", nil)
 	})
 
 	return r
