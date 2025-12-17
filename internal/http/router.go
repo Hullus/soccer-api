@@ -1,6 +1,8 @@
 package http
 
 import (
+	"soccer-api/internal/http/handlers"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
@@ -12,10 +14,12 @@ func CreateRouter() *chi.Mux {
 	r.Use(middleware.AllowContentType("application/json"))
 	r.Use(middleware.CleanPath)
 
+	authHandler := &handlers.AuthHandler{}
+
 	//Auth
 	r.Group(func(r chi.Router) {
-		r.Post("/v1/auth/signup", nil)
-		r.Post("/v1/auth/login", nil)
+		r.Post("/v1/auth/signup", authHandler.Signup)
+		r.Post("/v1/auth/login", authHandler.Login)
 	})
 
 	r.Group(func(r chi.Router) {

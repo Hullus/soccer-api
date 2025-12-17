@@ -35,13 +35,17 @@ func Auth(next http.Handler) http.Handler {
 
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok {
-			http.Error(w, "Unauthorized: Invalid claims", http.StatusUnauthorized)
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
 			return
 		}
 
-		userID := int64(claims["sub"].(float64))
-		ctx := context.WithValue(r.Context(), UserIDKey, userID)
+		sub, ok := claims["sub"].(float64)
+		if !ok {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
+			return
+		}
 
+		ctx := context.WithValue(r.Context(), UserIDKey, int64(sub))
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
