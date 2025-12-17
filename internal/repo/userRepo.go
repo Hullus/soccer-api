@@ -2,15 +2,15 @@ package repo
 
 import (
 	"context"
-	"soccer-api/internal/domain"
+	"soccer-api/internal/domain/DBModels"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type UserRepo struct{ Pool *pgxpool.Pool }
 
-func (r *UserRepo) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
-	var u domain.User
+func (r *UserRepo) GetByEmail(ctx context.Context, email string) (*DBModels.User, error) {
+	var u DBModels.User
 	query := `SELECT id, email, password_hash FROM users WHERE email = $1`
 	err := r.Pool.QueryRow(ctx, query, email).Scan(&u.ID, &u.Email, &u.PasswordHash)
 	return &u, err

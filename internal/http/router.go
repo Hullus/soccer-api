@@ -16,13 +16,11 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 	r.Use(middleware.AllowContentType("application/json"))
 	r.Use(middleware.CleanPath)
 
-	userRepo := repo.UserRepo{
-		Pool: pool,
-	}
+	//Repositories
+	userRepo := repo.UserRepo{Pool: pool}
 
-	authHandler := &handlers.AuthHandler{
-		AuthRepo: userRepo,
-	}
+	//Services
+	authHandler := &handlers.AuthHandler{AuthRepo: userRepo} //TODO: Remove logic from handler and distribute to correct files
 
 	r.Group(func(r chi.Router) {
 		//Auth
