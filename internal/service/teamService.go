@@ -34,7 +34,14 @@ func (r TeamService) GetTeamInformation(ctx context.Context) (*responses.TeamInf
 		return nil, fmt.Errorf("service.getPlayersByTeam (ID: %d): %w", teamInfo.ID, err)
 	}
 
-	return &responses.TeamInformationResponse{Team: *teamInfo, Players: players}, nil
+	publicTeam := responses.TeamInformationPublic{
+		Name:             teamInfo.Name,
+		BudgetCents:      teamInfo.BudgetCents,
+		Country:          teamInfo.Country,
+		TotalMarketValue: teamInfo.TotalMarketValue,
+	}
+
+	return &responses.TeamInformationResponse{Team: publicTeam, Players: players}, nil
 }
 
 func (r TeamService) UpdateTeam(ctx context.Context, name, country string) error {
