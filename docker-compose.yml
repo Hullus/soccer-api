@@ -4,12 +4,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=password
-      - DB_NAME=footballManager
-      - DB_SSL_MODE=disable
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/footballManager?sslmode=disable
     depends_on:
       postgres:
         condition: service_healthy
