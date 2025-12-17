@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"soccer-api/internal/domain/requests"
+	"soccer-api/internal/domain/responses"
 	"soccer-api/internal/service"
 	"strconv"
 
@@ -27,5 +29,7 @@ func (h *PlayerHandler) UpdatePlayer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	json.NewEncoder(w).Encode(responses.MessageResponse{
+		Message: fmt.Sprintf("Player %d updated successfully", playerID),
+	})
 }

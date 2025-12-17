@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"soccer-api/internal/domain/responses"
 	"soccer-api/internal/service"
 	"strconv"
 
@@ -28,7 +29,9 @@ func (h *MarketHandler) ListPlayer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
-	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(responses.MessageResponse{
+		Message: "Player successfully listed on the transfer market",
+	})
 }
 
 func (h *MarketHandler) GetMarket(w http.ResponseWriter, r *http.Request) {
@@ -49,5 +52,7 @@ func (h *MarketHandler) CancelListing(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to Cancel listing", http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	json.NewEncoder(w).Encode(responses.MessageResponse{
+		Message: "Transfer listing cancelled successfully",
+	})
 }

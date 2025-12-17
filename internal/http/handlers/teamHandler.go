@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"soccer-api/internal/domain/requests"
+	"soccer-api/internal/domain/responses"
 	"soccer-api/internal/service"
 )
 
@@ -39,5 +40,7 @@ func (h *TeamHandler) UpdateTeam(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to update team", http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	json.NewEncoder(w).Encode(responses.MessageResponse{
+		Message: "Team information updated successfully",
+	})
 }
