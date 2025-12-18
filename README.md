@@ -39,70 +39,10 @@ API-ში მთავარი ლოგიკა არის გადან
 **TRANSFER_LISTINGS** - ტრანსფერებისთვის აღრიცხული მოთამაშეები\
 **TRANSFERS** - უკვე დასრულებული ტრანსფერები რომელიც შეგვიძია ვნახოთ აუდიტისთვის
 
-```mermaid
-classDiagram
-    direction BT
-    
-    class players {
-        bigint team_id
-        varchar(100) first_name
-        varchar(100) last_name
-        varchar(100) country
-        integer age
-        bigint market_value_cents
-        timestamp created_at
-        timestamp updated_at
-        player_position position
-        bigint id
-    }
-
-    class teams {
-        varchar(100) name
-        bigint budget_cents
-        timestamp created_at
-        varchar(100) country
-        bigint owner_id
-        bigint id
-    }
-
-    class transfer_listings {
-        bigint player_id
-        bigint seller_team_id
-        bigint sold_to_team_id
-        listing_status status
-        bigint asking_price_cents
-        timestamp listed_at
-        timestamp sold_at
-        bigint id
-    }
-
-    class transfers {
-        bigint player_id
-        bigint from_team_id
-        bigint to_team_id
-        bigint price_cents
-        timestamp created_at
-        bigint id
-    }
-
-    class users {
-        varchar(255) email
-        varchar(255) password_hash
-        timestamp created_at
-        bigint id
-    }
-
-    players --> teams : "team_id:id"
-    teams --> users : "owner_id:id"
-    transfer_listings --> players : "player_id:id"
-    transfer_listings --> teams : "seller_team_id:id"
-    transfer_listings --> teams : "sold_to_team_id:id"
-    transfers --> players : "player_id:id"
-    transfers --> teams : "from_team_id:id"
-    transfers --> teams : "to_team_id:id"
-```
 ### PS
 
 აქვე ნახავთ file-ებს რომელშიც არ წერია არაფერი, ეს რეალურად არის იდეები რომლების იმპლემენტაციაც მიმაჩნდა კარგი აზრი,
 მაგრამ დროის დასრულებიდან გამომდინარე ვერ მოხდა იმპლემენტაცია, მაგრამ ვინმე თუ იკითხავს ეს უბრალოდ out of scope იყო და
 შემდეგ სპრინტებში უნდა მოხდეს დაგეგმვა.
+
+![img.png](img.png)
