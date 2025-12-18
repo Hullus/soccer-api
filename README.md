@@ -41,60 +41,65 @@ API-ში მთავარი ლოგიკა არის გადან
 
 ```mermaid
 classDiagram
-direction BT
-class players {
-bigint team_id
-varchar(100) first_name
-varchar(100) last_name
-varchar(100) country
-integer age
-bigint market_value_cents
-timestamp with time zone created_at
-timestamp with time zone updated_at
-player_position position
-bigint id
-}
-class teams {
-varchar(100) name
-bigint budget_cents
-timestamp with time zone created_at
-varchar(100) country
-bigint owner_id
-bigint id
-}
-class transfer_listings {
-bigint player_id
-bigint seller_team_id
-bigint sold_to_team_id
-listing_status status
-bigint asking_price_cents
-timestamp with time zone listed_at
-timestamp with time zone sold_at
-bigint id
-}
-class transfers {
-bigint player_id
-bigint from_team_id
-bigint to_team_id
-bigint price_cents
-timestamp with time zone created_at
-bigint id
-}
-class users {
-varchar(255) email
-varchar(255) password_hash
-timestamp with time zone created_at
-bigint id
-}
+    direction BT
+    
+    class players {
+        bigint team_id
+        varchar(100) first_name
+        varchar(100) last_name
+        varchar(100) country
+        integer age
+        bigint market_value_cents
+        timestamp created_at
+        timestamp updated_at
+        player_position position
+        bigint id
+    }
 
-players -->  teams : team_id:id
-teams -->  users : owner_id:id
-transfer_listings -->  players : player_id:id
-transfer_listings -->  teams : seller_team_id:id
-transfer_listings -->  teams : sold_to_team_id:id
-transfers -->  players : player_id:id
-transfers -->  teams : from_team_id:id
-transfers -->  teams : to_team_id:id
+    class teams {
+        varchar(100) name
+        bigint budget_cents
+        timestamp created_at
+        varchar(100) country
+        bigint owner_id
+        bigint id
+    }
+
+    class transfer_listings {
+        bigint player_id
+        bigint seller_team_id
+        bigint sold_to_team_id
+        listing_status status
+        bigint asking_price_cents
+        timestamp listed_at
+        timestamp sold_at
+        bigint id
+    }
+
+    class transfers {
+        bigint player_id
+        bigint from_team_id
+        bigint to_team_id
+        bigint price_cents
+        timestamp created_at
+        bigint id
+    }
+
+    class users {
+        varchar(255) email
+        varchar(255) password_hash
+        timestamp created_at
+        bigint id
+    }
+
+    players --> teams : "team_id:id"
+    teams --> users : "owner_id:id"
+    transfer_listings --> players : "player_id:id"
+    transfer_listings --> teams : "seller_team_id:id"
+    transfer_listings --> teams : "sold_to_team_id:id"
+    transfers --> players : "player_id:id"
+    transfers --> teams : "from_team_id:id"
+    transfers --> teams : "to_team_id:id"
 ```
 ### PS
 
