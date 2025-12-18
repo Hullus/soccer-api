@@ -8,9 +8,6 @@
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/d064eece-87b5-45df-83fe-78893bd6eb73/console.sql" value="d064eece-87b5-45df-83fe-78893bd6eb73" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/d064eece-87b5-45df-83fe-78893bd6eb73/console_1.sql" value="d064eece-87b5-45df-83fe-78893bd6eb73" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/d064eece-87b5-45df-83fe-78893bd6eb73/console_2.sql" value="d064eece-87b5-45df-83fe-78893bd6eb73" />
-    <file url="mock:///marketRepo.go" value="d064eece-87b5-45df-83fe-78893bd6eb73" />
-    <file url="mock:///marketRepo.go" value="d064eece-87b5-45df-83fe-78893bd6eb73" />
-    <file url="mock:///marketRepo.go" value="d064eece-87b5-45df-83fe-78893bd6eb73" />
-    <file url="mock:///marketRepo.go" value="d064eece-87b5-45df-83fe-78893bd6eb73" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/d064eece-87b5-45df-83fe-78893bd6eb73/console_3.sql" value="d064eece-87b5-45df-83fe-78893bd6eb73" />
   </component>
 </project>

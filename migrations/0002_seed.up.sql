@@ -12,7 +12,7 @@ INSERT INTO players (team_id, first_name, last_name, country, age, position, mar
 SELECT (floor(random() * 3) + 1)::int,
        (ARRAY ['Marc', 'Robert', 'Kevin', 'Erling', 'Manuel', 'Joshua', 'Vinicius', 'Jude', 'Harry', 'Kylian'])[floor(random() * 10) + 1],
        (ARRAY ['Ter Stegen', 'Lewandowski', 'De Bruyne', 'Haaland', 'Neuer', 'Kimmich', 'Junior', 'Bellingham', 'Kane', 'Mbappe'])[floor(random() * 10) + 1],
-       (ARRAY ['Germany', 'Poland', 'Belgium', 'Norway', 'Brazil', 'England', 'France', 'Spain'])[floor(random() * 8) + 1],
+       (ARRAY ['Germany','Georgia', 'Poland', 'Belgium', 'Norway', 'Brazil', 'England', 'France', 'Spain'])[floor(random() * 8) + 1],
        (floor(random() * (35 - 18 + 1) + 18))::int,
        (ARRAY ['goalkeeper', 'defender', 'midfielder', 'attacker']::player_position[])[floor(random() * 4) + 1],
        1000000

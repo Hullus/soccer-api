@@ -17,6 +17,7 @@ type Credentials struct {
 }
 type AuthHandler struct {
 	AuthRepo repo.UserRepo
+	TeamRepo repo.TeamRepo
 }
 
 func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
@@ -75,6 +76,11 @@ func (h *AuthHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	id, err := h.AuthRepo.Create(r.Context(), credentials.Email, string(hash))
 	if err != nil {
 		http.Error(w, "User already exists", http.StatusConflict)
+		return
+	}
+
+	if err := h.TeamRepo.AssignNewTeam(r.Context(), id, credentials.Email); err != nil {
+		http.Error(w, "User created but team assignment failed: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 

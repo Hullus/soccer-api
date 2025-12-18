@@ -35,7 +35,7 @@ func CreateRouter(pool *pgxpool.Pool) *chi.Mux {
 	}
 
 	//Handlers
-	authHandler := &handlers.AuthHandler{AuthRepo: userRepo}
+	authHandler := &handlers.AuthHandler{AuthRepo: userRepo, TeamRepo: teamRepo}
 	teamHandler := &handlers.TeamHandler{Service: teamService}
 	playerHandler := &handlers.PlayerHandler{Service: teamService}
 	marketHandler := &handlers.MarketHandler{Service: marketService}
