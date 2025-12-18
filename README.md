@@ -39,6 +39,7 @@ API-ში მთავარი ლოგიკა არის გადან
 **TRANSFER_LISTINGS** - ტრანსფერებისთვის აღრიცხული მოთამაშეები\
 **TRANSFERS** - უკვე დასრულებული ტრანსფერები რომელიც შეგვიძია ვნახოთ აუდიტისთვის
 
+```mermaid
 classDiagram
 direction BT
 class players {
@@ -94,7 +95,7 @@ transfer_listings -->  teams : sold_to_team_id:id
 transfers -->  players : player_id:id
 transfers -->  teams : from_team_id:id
 transfers -->  teams : to_team_id:id
-
+```
 ### PS
 
 აქვე ნახავთ file-ებს რომელშიც არ წერია არაფერი, ეს რეალურად არის იდეები რომლების იმპლემენტაციაც მიმაჩნდა კარგი აზრი,
